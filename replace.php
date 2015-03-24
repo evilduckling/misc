@@ -4,7 +4,7 @@
  * Rename every occurence of the specified word by another in the specified file including filename.
  */
 
-// option -q quiet
+// nice to have: option -q quiet
 
 $usage = <<<USAGE
 Usage: php replace.php [-m] [-d] [-h] [-v] <word-to-replace> <word-to-replace> [<filename>[<otherfile>]*]

@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 /**
- * Generate a MEDIA_VERISON hash.
+ * Generate a MEDIA_VERSION hash.for a path of files.
  */
 $usage = <<<USAGE
 Usage: php checksum.php -p <mediapath> -c <conffile> [-h]
@@ -54,13 +54,12 @@ function hashDir($dirname) {
 	$dh  = opendir($dirname);
 	while (FALSE !== ($filename = readdir($dh))) {
 		if($filename !== '.' and $filename !== '..') {
-	    	$files[] = $dirname.'/'.$filename;
+			$files[] = $dirname.'/'.$filename;
 		}
 	}
 	closedir($dh);
 
 	foreach($files as $file) {
-		//echo "$file\n";
 		if(is_dir($file)) {
 			$hash .= hashDir($file);
 		} else {
