@@ -1,15 +1,17 @@
 <?php
 
 $usage = <<<USAGE
-Usage: php nanainlyseur.php [-r <range>] -p <positionx,positiony> [-h]
+Usage: php nanainlyseur.php [-r <range>] -p <positionx,positiony> -n name [-h]
 Options:
     -h display this message
+    -n name
     -p player position (x,y)
     -r range of sight
 
 USAGE;
 
-$options = getopt('hp:r:');
+const DEBUGGER = false;
+$options = getopt('hn:p:r:');
 
 if(isset($options['h'])) {
     echo $usage;
@@ -29,23 +31,53 @@ if(isset($options['p'])) {
     exit(0);
 }
 
-$nickname = "Evil Duckling";
+if(isset($options['n'])) {
+    $nickname = $options['n'];
+} else {
+    echo 'Missing name parameter'.PHP_EOL;
+    exit(0);
+}
+
 $level = '132cm';
-$range++;
+$squareRange = getSquareRange($range + 1);
 
-echo " [[*CD*]] $nickname (Longueur barbe : $level - Contractuelle - distance : 0 - position : $mine_i,$mine_j) : (pas de description) | Attaquer ! | Ecrire | ".PHP_EOL;
-echo "XXXXX".PHP_EOL;
+if(!DEBUGGER) echo " [[*CD*]] $nickname (Longueur barbe : $level - Contractuelle - distance : 0 - position : $mine_i,$mine_j) : (pas de description) | Attaquer ! | Ecrire | ".PHP_EOL;
+if(!DEBUGGER) echo "XXXXX".PHP_EOL;
 
-for($i=1; $i<= 22;$i++) {
-    for($j=1; $j<= 8;$j++) {
+for($j=1; $j<= 8;$j++) {
+    for($i=1; $i<= 22;$i++) {
 
-        $distance = sqrt(pow(($i - $mine_i), 2) + pow(($j - $mine_j), 2));
+        $squareDistance = pow(($i - $mine_i), 2) + pow(($j - $mine_j), 2);
 
         if(
             ($i != $mine_i or $j != $mine_j) and
-            $distance < $range
+            $squareDistance < $squareRange
         ) {
-            echo " Bandeau Noir (distance : 6 position : $i, $j) Tombe en poussière dans : 8 jour(s) 7 heures".PHP_EOL;
+            if(!DEBUGGER) echo " Bandeau Noir (distance : 6 position : $i, $j) Tombe en poussière dans : 8 jour(s) 7 heures".PHP_EOL;
+            if(DEBUGGER) echo ' # ';
+        } else {
+            if(DEBUGGER) echo ' - ';
         }
+    }
+    if(DEBUGGER) echo PHP_EOL;
+}
+
+function getSquareRange($range)
+{
+    switch($range) {
+        case 2:
+            return 4;
+        case 3:
+            return 8;
+        case 4:
+            return 13;
+
+            // TODO
+
+        case 8:
+            return 56;
+
+        default :
+            pow($range, 2);
     }
 }
