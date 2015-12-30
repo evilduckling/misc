@@ -71,13 +71,15 @@ function getSquareRange($range)
             return 8;
         case 4:
             return 13;
-
             // TODO
 
+        case 7:
+            return 45;
         case 8:
             return 56;
+            // TODO
 
         default :
-            pow($range, 2);
+            return pow($range, 2);
     }
 }
