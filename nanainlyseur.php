@@ -1,21 +1,27 @@
 <?php
 
 $usage = <<<USAGE
-Usage: php nanainlyseur.php [-r <range>] -p <positionx,positiony> -n name [-h]
+Usage: php nanainlyseur.php [-r <range>] -p <positionx,positiony> -n name [-m] [-h]
 Options:
     -h display this message
+    -m display map
     -n name
     -p player position (x,y)
     -r range of sight
 
 USAGE;
 
-const DEBUGGER = false;
-$options = getopt('hn:p:r:');
+$options = getopt('hn:mp:r:');
 
 if(isset($options['h'])) {
     echo $usage;
     exit(0);
+}
+
+if(isset($options['m'])) {
+    $debugger = true;
+} else {
+    $debugger = false;
 }
 
 if(isset($options['r'])) {
@@ -38,11 +44,11 @@ if(isset($options['n'])) {
     exit(0);
 }
 
-$level = '132cm';
+$level = '141cm';
 $squareRange = getSquareRange($range + 1);
 
-if(!DEBUGGER) echo " [[*CD*]] $nickname (Longueur barbe : $level - Contractuelle - distance : 0 - position : $mine_i,$mine_j) : (pas de description) | Attaquer ! | Ecrire | ".PHP_EOL;
-if(!DEBUGGER) echo "XXXXX".PHP_EOL;
+if(!$debugger) echo " [[*CD*]] $nickname (Longueur barbe : $level - Contractuelle - distance : 0 - position : $mine_i,$mine_j) : (pas de description) | Attaquer ! | Ecrire | ".PHP_EOL;
+if(!$debugger) echo "XXXXX".PHP_EOL;
 
 for($j=1; $j<= 8;$j++) {
     for($i=1; $i<= 22;$i++) {
@@ -53,13 +59,13 @@ for($j=1; $j<= 8;$j++) {
             ($i != $mine_i or $j != $mine_j) and
             $squareDistance < $squareRange
         ) {
-            if(!DEBUGGER) echo " Bandeau Noir (distance : 6 position : $i, $j) Tombe en poussière dans : 8 jour(s) 7 heures".PHP_EOL;
-            if(DEBUGGER) echo ' # ';
+            if(!$debugger) echo " Bandeau Noir (distance : 6 position : $i, $j) Tombe en poussière dans : 8 jour(s) 7 heures".PHP_EOL;
+            if($debugger) echo ' # ';
         } else {
-            if(DEBUGGER) echo ' - ';
+            if($debugger) echo ' - ';
         }
     }
-    if(DEBUGGER) echo PHP_EOL;
+    if($debugger) echo PHP_EOL;
 }
 
 function getSquareRange($range)
@@ -75,12 +81,11 @@ function getSquareRange($range)
             return 21;
         case 6:
             return 30;
-            // TODO
-
         case 7:
             return 45;
         case 8:
             return 56;
+
             // TODO
 
         default :
