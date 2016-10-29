@@ -71,6 +71,10 @@ function getSquareRange($range)
             return 8;
         case 4:
             return 13;
+        case 5:
+            return 21;
+        case 6:
+            return 30;
             // TODO
 
         case 7:
