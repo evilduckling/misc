@@ -88,6 +88,11 @@ function getSquareRange($range)
 
             // TODO
 
+        case 11:
+            return 115;
+
+            // TODO
+
         default :
             return pow($range, 2);
     }
