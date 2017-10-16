@@ -6,6 +6,7 @@
  *  - create database creation + requesting fields list
  *
  * @param name=beanName
+ * @param attributes=<type>-<name>,...
  */
 define("BEAN_DIR", "/Users/renaud/AndroidStudioProjects/MyAtlas/app/src/main/java/com/myatlas/models");
 
@@ -86,14 +87,20 @@ $constructor .= "\n    }";
 
 // Generate toString();
 $toStringMethod .= '    public String toString() {
-        String out = "";';
+        String out = "+- '.$beanName.' -" + BACKCHAR;';
+$maxAttrLength = 0;
+foreach($attributes as $attribute) {
+    list($type, $name) = explode("-", $attribute);
+    $maxAttrLength = max($maxAttrLength, strlen($name) + 1);
+}
 foreach($attributes as $attribute) {
     list($type, $name) = explode("-", $attribute);
     // Generate definition
     $toStringMethod .= '
-        out += "'.$name.':" + '.$name.' + SEPARATOR;';
+        out += COLUMN_MARKER + "'.str_pad($name, $maxAttrLength, " ").':" + '.$name.' + BACKCHAR;';
 }
 $toStringMethod .= '
+        out += "+---";
         return out;
     }';
 
@@ -183,7 +190,8 @@ import org.json.JSONObject;' : '').'
  */
 public class '.$beanName.' {
 
-    private static final String SEPARATOR = " | ";
+    private static final String BACKCHAR = "\n";
+    private static final String COLUMN_MARKER = "| ";
 
 '.$attributesDefinition.'
 '.$constructor.'
