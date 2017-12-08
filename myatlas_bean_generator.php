@@ -7,14 +7,18 @@
  *
  * @param name=beanName
  * @param attributes=<type>-<name>,...
+ * @param package=packageName (optional)
  */
-define("BEAN_DIR", "/Users/renaud/AndroidStudioProjects/MyAtlas/app/src/main/java/com/myatlas/models");
+define('BEAN_DIR', '/Users/renaud/AndroidStudioProjects/MyAtlas/app/src/main/java/com/myatlas/models');
 
 // retrieve parameter
 $beanName = $attributes = NULL;
 foreach($argv as $arg) {
     if(strpos($arg, 'name=') === 0) {
         $beanName = ucfirst(substr($arg, 5));
+    }
+    if(strpos($arg, 'package=') === 0) {
+        $package = substr($arg, 8);
     }
     if(strpos($arg, 'attributes=') === 0) {
         $attributes = explode(',', substr($arg, 11));
@@ -26,7 +30,11 @@ if(empty($beanName) or empty($attributes)) {
 }
 
 // Create bean file
-$file = BEAN_DIR."/".$beanName.".java";
+if (isset($package)) {
+    $file = BEAN_DIR."/$package/$beanName.java";
+} else {
+    $file = BEAN_DIR."/$beanName.java";
+}
 
 $attributesDefinition = '';
 $constructor = '';
@@ -171,7 +179,11 @@ foreach($attributes as $attribute) {
 
 // Generate bean file
 echo "\n  ->  Create file $file";
-file_put_contents($file, 'package com.myatlas.models;'.
+$fullPackageName = 'com.myatlas.models';
+if (isset($package)) {
+    $fullPackageName .= '.'.$package;
+}
+file_put_contents($file, 'package '.$fullPackageName.';'.
 (($importJsonArray or $importJsonObject) ? '
 
 import com.myatlas.helpers.ErrorHelper;
