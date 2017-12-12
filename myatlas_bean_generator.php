@@ -50,6 +50,7 @@ foreach($attributes as $attribute) {
     switch ($type) {
         case "String":
         case "int":
+        case "double":
             $attributesDefinition .= '    public '.$type.' '.$name.';
 ';
             break;
@@ -70,6 +71,7 @@ foreach($attributes as $i => $attribute) {
     switch ($type) {
         case "String":
         case "int":
+        case "double":
             if (!$first) {
                 $constructor .= ",";
             }
@@ -86,6 +88,7 @@ foreach($attributes as $attribute) {
     switch ($type) {
         case "String":
         case "int":
+        case "double":
             $constructor .= '
         this.' . $name .' = '.$name.';';
             break;
@@ -243,6 +246,7 @@ foreach($attributes as $attribute) {
     switch ($type) {
         case "String":
         case "int":
+        case "double":
             $sqlInsert .= '
                 values.put("'.$name.'", '.lcfirst($beanName).'.'.$name.');';
             break;
@@ -284,6 +288,10 @@ foreach($attributes as $attribute) {
             $sqlGetArrayBuffer[] =
 '                    cursor.getInt(cursor.getColumnIndex("'.$name.'"))';
             break;
+        case "double":
+            $sqlGetArrayBuffer[] =
+'                    Misc.parseDouble(cursor.getString(cursor.getColumnIndex("'.$name.'")), 0)';
+            break;
         case "JSONObject":
         case "JSONArray":
             $sqlGetJSON .=
@@ -324,6 +332,7 @@ foreach($attributes as $i => $attribute) {
         case "String":
         case "JSONObject":
         case "JSONArray":
+        case "double":
             $sqlCreate .= '
             /*TODO check not null*/"'.$name.' TEXT NOT NULL';
             break;
