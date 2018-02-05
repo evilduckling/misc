@@ -76,7 +76,7 @@ foreach($attributes as $i => $attribute) {
                 $constructor .= ",";
             }
             $constructor .= '
-        ' . $type.' '.$name;
+            ' . $type.' '.$name;
             $first = false;
             break;
     }
