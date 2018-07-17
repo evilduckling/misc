@@ -5,6 +5,8 @@
  *
  * This script remove all the lines in which the checksum is unique in the file.
  * /!\ This script expect the input files to be sorted.
+ * Note: files might be generated with : 
+ * (Mac) #find <directory> -type f -iname "*.jpg" -exec md5 -r {} + -o -iname "*.nef" -exec md5 -r {} + | sort >> ~/outputfile
  *
  * Usage: php remove_single_lines.php [<filename>[<otherfile>]*]
  *
@@ -14,10 +16,10 @@ array_shift($argv);
 
 while(count($argv) > 0) {
 	$filename = array_shift($argv);
-	treat($filename);
+	process($filename);
 }
 
-function treat($file) {
+function process($file) {
 
 	if(!file_exists($file)) {return;}
 
