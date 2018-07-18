@@ -21,7 +21,10 @@ while(count($argv) > 0) {
 
 function process($file) {
 
-	if(!file_exists($file)) {return;}
+	if(!file_exists($file)) {
+		echo "$file does not exist.\n";
+		return;
+	}
 
 	// Load
 	$data = explode(PHP_EOL, file_get_contents($file));
